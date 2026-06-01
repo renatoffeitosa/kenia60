@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kenia — 60 Anos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --yellow: #F2C63A;
+      --orange: #D04E1A;
+      --dark:   #181818;
+      --cream:  #F4EFE6;
+      --white:  #FFFFFF;
+      --nav-h:  64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ──────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      background: rgba(255,255,255,0.96);
+      backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .nav-logo img {
+      height: 30px;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: lowercase;
+      color: var(--dark);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--orange); }
+
+    .nav-btn {
+      display: inline-block;
+      padding: 9px 20px;
+      background: var(--orange);
+      color: var(--white) !important;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .nav-btn:hover { background: #b84215 !important; color: var(--white) !important; }
+
+    /* ─── PLAYER DE ÁUDIO FIXO ─────────────────────────── */
+    #audio-player {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(24,24,24,0.92);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 60px;
+      padding: 12px 20px 12px 14px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    }
+
+    #audio-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--orange);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.2s, transform 0.15s;
+    }
+
+    #audio-btn:hover  { background: #b84215; }
+    #audio-btn:active { transform: scale(0.93); }
+
+    #audio-btn svg { width: 16px; height: 16px; fill: #fff; }
+
+    .audio-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .audio-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--white);
+      white-space: nowrap;
+    }
+
+    .audio-artist {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      white-space: nowrap;
+    }
+
+    /* bolinha pulsante quando tocando */
+    .audio-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--yellow);
+      flex-shrink: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .audio-dot.playing {
+      opacity: 1;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);   opacity: 1; }
+      50%       { transform: scale(1.6); opacity: 0.5; }
+    }
+
+    /* ─── HERO ─────────────────────────────────────────── */
+    #inicio {
+      min-height: 100vh;
+      padding-top: var(--nav-h);
+      background: url('ASSETS/IMAGES/BG_header.png') center center / cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-deco-circle {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--yellow);
+    }
+    .hero-deco-circle.c1 { width: 120px; height: 120px; top: 120px; right: 80px; }
+    .hero-deco-circle.c2 { width: 72px;  height: 72px;  bottom: 180px; left: 60px; opacity: .7; }
+
+    .hero-note {
+      position: absolute;
+      font-size: 36px;
+      color: var(--dark);
+      opacity: 0.55;
+    }
+    .hero-note.n1 { top: 130px; left: 60px; }
+    .hero-note.n2 { top: 200px; right: 200px; font-size: 28px; }
+    .hero-note.n3 { bottom: 220px; right: 80px; font-size: 22px; }
+
+    .hero-content {
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .hero-logo img {
+      /* desktop: um toque maior que o bloco de texto (max-width 480px) */
+      height: clamp(40px, 5.5vw, 68px);
+      width: auto;
+      max-width: 100%;
+      display: block;
+      opacity: 0.85;
+    }
+
+    @media (max-width: 600px) {
+      .hero-logo img {
+        /* mobile: mesma largura do box de texto (hero-content com padding 24px) */
+        height: auto;
+        width: calc(100vw - 48px);
+        max-width: 327px;
+        opacity: 0.85;
+      }
+    }
+
+    .hero-quote p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 20px;
+      line-height: 1.65;
+      color: var(--dark);
+      opacity: 0.85;
+      max-width: 480px;
+    }
+
+    .hero-quote cite {
+      display: block;
+      margin-top: 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-style: normal;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dark);
+      opacity: 0.5;
+    }
+
+    /* ─── INFO + RSVP ──────────────────────────────────── */
+    #data-local {
+      background: var(--dark);
+      padding: 0 0 64px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* info.png: 25% da largura, centralizada */
+    .info-img-wrap {
+      width: 25%;
+      margin: 0 auto;
+      padding: 56px 0 40px;
+      line-height: 0;
+    }
+
+    .info-img-wrap img {
+      width: 100%;
+      display: block;
+    }
+
+    /* separador decorativo */
+    .info-divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(255,255,255,0.2);
+      margin: 0 auto 36px;
+    }
+
+    .rsvp-block {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 0 32px;
+    }
+
+    .rsvp-hint {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 0.03em;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .rsvp-hint em {
+      font-style: italic;
+      color: var(--orange);
+    }
+
+    .rsvp-input {
+      width: 100%;
+      padding: 16px 20px;
+      border: none;
+      border-bottom: 2px solid rgba(255,255,255,0.2);
+      background: transparent;
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.2s;
+      text-align: center;
+    }
+
+    .rsvp-input::placeholder { color: rgba(255,255,255,0.3); }
+    .rsvp-input:focus { border-color: var(--yellow); }
+
+    .rsvp-btn {
+      width: 100%;
+      padding: 16px 24px;
+      background: var(--orange);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .rsvp-btn:hover  { background: #b84215; }
+    .rsvp-btn:active { transform: scale(0.98); }
+
+    .rsvp-msg {
+      display: none;
+      padding: 14px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.5;
+    }
+    .rsvp-msg.success {
+      display: block;
+      background: rgba(242,198,58,0.12);
+      border: 1px solid var(--yellow);
+      color: var(--yellow);
+    }
+    .rsvp-msg.error {
+      display: block;
+      background: rgba(208,78,26,0.12);
+      border: 1px solid var(--orange);
+      color: #f28060;
+    }
+
+    /* ─── SESSÃO FOTO — zoom-in parallax ───────────────
+       Imagem fixa no container, escala aumenta suavemente
+       via JS conforme a seção entra na viewport.
+    ──────────────────────────────────────────────────── */
+    #foto-kenia {
+      position: relative;   /* ancora o texto absoluto no mobile */
+      height: 90vh;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #foto-kenia .foto-bg-wrap {
+      position: absolute;
+      inset: -8%;
+      will-change: transform;
+    }
+
+    #foto-kenia .foto-bg-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* citação mobile sobre a foto — oculta no desktop */
+    .foto-mobile-quote {
+      display: none;
+    }
+
+    /* ─── MAOS + O QUE ESPERAR ─────────────────────────── */
+    #esperar-section { background: var(--cream); overflow: hidden; }
+
+    .maos-full { width: 100%; line-height: 0; }
+    .maos-full img { width: 100%; display: block; object-fit: cover; }
+
+    .esperar-inner {
+      padding: 80px 48px 100px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    /* ─── HEADINGS unificados em Cormorant ─────────────── */
+    .section-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(32px, 4.5vw, 54px);
+      font-weight: 300;
+      line-height: 1.1;
+      font-style: normal;
+      color: var(--dark);
+    }
+
+    .section-heading strong {
+      font-weight: 700;
+      font-style: italic;
+      display: block;
+      font-size: 1.25em;
+    }
+
+    .section-divider {
+      width: 48px;
+      height: 2px;
+      background: var(--dark);
+      margin-top: 24px;
+    }
+
+    .section-text {
+      font-size: 17px;
+      line-height: 1.85;
+      color: #444;
+      padding-top: 8px;
+    }
+
+    /* ─── HOTEL — parallax zoom ─────────────────────────── */
+    #hotel {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hotel-bg-wrap {
+      position: absolute;
+      inset: -10%;
+      will-change: transform;
+    }
+
+    .hotel-bg-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #hotel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.52);
+      z-index: 1;
+    }
+
+    .hotel-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: var(--white);
+      padding: 48px 32px;
+      max-width: 680px;
+    }
+
+    .hotel-content .coupon-tag {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--dark);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      margin-bottom: 28px;
+    }
+
+    /* texto principal do hotel — maior e com mais destaque */
+    .hotel-content .hotel-main-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(22px, 3vw, 36px);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.55;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    .hotel-content .hotel-main-text em {
+      font-weight: 600;
+      color: var(--yellow);
+      font-style: normal;
+    }
+
+    .hotel-content .hotel-addr {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    .hotel-content .hotel-addr a {
+      color: var(--yellow);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .btn-reservar {
+      display: inline-block;
+      padding: 15px 44px;
+      border: 2px solid var(--white);
+      color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .btn-reservar:hover { background: var(--white); color: var(--dark); }
+
+    /* ─── O QUE VESTIR ──────────────────────────────────── */
+    #vestir-section { background: var(--white); }
+
+    .vestir-inner {
+      padding: 100px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .trajes-img-wrap { width: 100%; max-height: 640px; overflow: hidden; }
+    .trajes-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ─── FOOTER ────────────────────────────────────────── */
+    footer {
+      position: relative;
+      min-height: 380px;
+      overflow: hidden;
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 48px;
+      gap: 36px;
+    }
+
+    .footer-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center bottom;
+      opacity: 0.35;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .footer-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(17px, 2.5vw, 23px);
+      color: rgba(255,255,255,0.7);
+      max-width: 540px;
+      line-height: 1.7;
+    }
+
+    .footer-logo img {
+      height: clamp(24px, 4vw, 50px);
+      display: block;
+      filter: brightness(0) invert(1);
+      opacity: 0.9;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 0 24px; }
+      .nav-links { gap: 20px; }
+      .info-img-wrap { width: 80%; }
+
+      #foto-kenia { min-height: 70vh; }
+
+      #foto-kenia .foto-bg-wrap img {
+        object-position: 22% center;
+      }
+
+      .foto-mobile-quote {
+        display: block;
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        padding: 48px 28px 96px;   /* 96px = evita sobreposição do player fixo */
+        font-family: 'Cormorant Garamond', serif;
+        font-style: italic;
+        font-size: 22px;
+        font-weight: 300;
+        line-height: 1.5;
+        color: var(--white);
+        text-align: left;
+        /* gradiente de baixo para cima para garantir legibilidade */
+        background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+        z-index: 2;
+      }
+
+      .esperar-inner, .vestir-inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 64px 32px;
+      }
+
+      .rsvp-block { padding: 0 24px; max-width: 100%; }
+      #hotel { height: 80vh; }
+      #audio-player { bottom: 16px; right: 16px; }
+    }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .info-img-wrap { width: 90%; }
+      #hotel { height: 90vh; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ═══ NAV ════════════════════════════════════════════ -->
+<nav>
+  <a class="nav-logo" href="#inicio">
+    <img src="ASSETS/IMAGES/logo.svg" alt="Kenia Mara" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="#inicio">início</a></li>
+    <li><a href="#data-local">data/local</a></li>
+    <li><a href="#esperar-section">o que esperar</a></li>
+    <li><a href="#vestir-section">o que vestir</a></li>
+    <li><a class="nav-btn" href="#data-local">Confirmar Presença</a></li>
+  </ul>
+</nav>
+
+
+<!-- ═══ PLAYER DE ÁUDIO FIXO ══════════════════════════ -->
+<div id="audio-player">
+  <button id="audio-btn" onclick="toggleAudio()" aria-label="Play/Pause">
+    <!-- ícone play (padrão) -->
+    <svg id="icon-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    <!-- ícone pause (oculto) -->
+    <svg id="icon-pause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+  </button>
+  <div class="audio-info">
+    <span class="audio-title">Grande Valse Brillante</span>
+    <span class="audio-artist">Chopin · Rachmaninoff ao piano</span>
+  </div>
+  <div class="audio-dot" id="audio-dot"></div>
+</div>
+
+<!-- elemento de áudio (oculto) -->
+<audio id="audio-el" loop preload="auto">
+  <source src="ASSETS/valsa_chopin.mp3" type="audio/mpeg" />
+</audio>
+
+<script>
+  /* Autoplay instantâneo.
+     Browsers modernos bloqueiam áudio com volume antes de
+     qualquer interação. Estratégia:
+     1. Tenta tocar normalmente (funciona em Safari/iOS após
+        o usuário já ter interagido com o site alguma vez).
+     2. Se bloqueado, coloca muted=true e toca — isso sempre
+        funciona. Assim que o usuário interagir uma vez,
+        desmuta e continua do ponto em que estava.           */
+  (function () {
+    const a = document.getElementById('audio-el');
+    if (!a) return;
+
+    a.play().catch(() => {
+      a.muted = true;
+      a.play().then(() => {
+        /* já tocando mudo — desmuta no primeiro toque/clique */
+        const unmute = () => {
+          a.muted = false;
+          document.removeEventListener('click',      unmute);
+          document.removeEventListener('touchstart', unmute);
+          document.removeEventListener('keydown',    unmute);
+        };
+        document.addEventListener('click',      unmute, { once: true });
+        document.addEventListener('touchstart', unmute, { once: true });
+        document.addEventListener('keydown',    unmute, { once: true });
+      }).catch(() => {
+        /* último recurso: aguarda primeira interação */
+        const resume = () => {
+          a.muted = false;
+          a.play();
+          document.removeEventListener('click',      resume);
+          document.removeEventListener('touchstart', resume);
+        };
+        document.addEventListener('click',      resume, { once: true });
+        document.addEventListener('touchstart', resume, { once: true });
+      });
+    });
+  })();
+</script>
+
+
+<!-- ═══ HERO ════════════════════════════════════════════ -->
+<section id="inicio">
+  <div class="hero-deco-circle c1"></div>
+  <div class="hero-deco-circle c2"></div>
+  <span class="hero-note n1">♪</span>
+  <span class="hero-note n2">♫</span>
+  <span class="hero-note n3">♩</span>
+
+  <div class="hero-content">
+    <div class="hero-logo">
+      <img src="ASSETS/IMAGES/logo.svg" alt="Kenia Mara — 60 Anos" />
+    </div>
+    <div class="hero-quote">
+      <p>Sessenta anos de história, de amor e de pessoas incríveis que fizeram tudo valer a pena. Agora é hora de reunir todo mundo e celebrar juntos!</p>
+      <cite>— Kenia</cite>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══ DATA / LOCAL + RSVP ═══════════════════════════ -->
+<section id="data-local">
+  <div class="info-img-wrap">
+    <img src="ASSETS/IMAGES/info.png" alt="12 set 2026 · 17h · Oscar Restaurante · Dress Code Esporte Fino" />
+  </div>
+
+  <div class="info-divider"></div>
+
+  <div class="rsvp-block">
+    <p class="rsvp-hint">Digite seu nome <em>como consta no convite</em> e clique em confirmar presença</p>
+    <input
+      class="rsvp-input"
+      id="rsvp-input"
+      type="text"
+      placeholder="seu nome"
+      autocomplete="off"
+    />
+    <button class="rsvp-btn" onclick="confirmarPresenca()">Confirmar Presença</button>
+    <div class="rsvp-msg" id="rsvp-msg"></div>
+  </div>
+</section>
+
+
+<!-- ═══ SESSÃO FOTO — zoom-in parallax ══════════════ -->
+<section id="foto-kenia">
+  <div class="foto-bg-wrap" id="foto-bg-wrap">
+    <img src="ASSETS/IMAGES/sessao_foto.png" alt="" aria-hidden="true" />
+  </div>
+  <p class="foto-mobile-quote">
+    "Que sorte a minha ter pessoas tão especiais ao meu redor. Cada um de vocês faz tudo valer muito mais a pena."
+  </p>
+</section>
+
+
+<!-- ═══ MAOS + O QUE ESPERAR ════════════════════════ -->
+<section id="esperar-section">
+  <div class="maos-full">
+    <img src="ASSETS/IMAGES/MAOS.png" alt="" aria-hidden="true" />
+  </div>
+
+  <div class="esperar-inner">
+    <div>
+      <h2 class="section-heading">
+        O que
+        <strong>ESPERAR</strong>
+      </h2>
+      <div class="section-divider"></div>
+    </div>
+    <p class="section-text">
+      Ótimas companhias, conversas que rendem, vinhos que aquecem o coração e um ambiente aconchegante dentro de um dos <strong>restaurantes mais icônicos de Brasília</strong>, com direito a hospedagem com desconto. Além disso, música ao vivo por conta da aniversariante — uma apresentação de piano com repertório escolhido a dedo.<br><br>
+      É uma noite pra lembrar pra sempre. Vem junto!
+    </p>
+  </div>
+</section>
+
+
+<!-- ═══ HOTEL ════════════════════════════════════════ -->
+<section id="hotel">
+  <div class="hotel-bg-wrap" id="hotel-bg-wrap">
+    <img src="ASSETS/IMAGES/HOTEL.png" alt="Brasília Palace Hotel" />
+  </div>
+
+  <div class="hotel-content">
+    <span class="coupon-tag">Hospedagem com desconto</span>
+
+    <p class="hotel-main-text">
+      Use o cupom do convite para um desconto especial na hospedagem do
+      <em>Brasília Palace Hotel</em>.
+    </p>
+
+    <p class="hotel-addr">
+      Setor de Hotéis e Turismo Norte (SHTN), Trecho 01 — Brasília, DF<br>
+      <a href="https://maps.app.goo.gl/vRXhTemSJEjNYBrXA" target="_blank" rel="noopener">Ver no Google Maps →</a>
+    </p>
+
+    <a class="btn-reservar" href="https://www.plazabrasilia.com.br/brasilia-palace" target="_blank" rel="noopener">
+      Reservar
+    </a>
+  </div>
+</section>
+
+
+<!-- ═══ O QUE VESTIR ════════════════════════════════ -->
+<section id="vestir-section">
+  <div class="vestir-inner">
+    <div>
+      <h2 class="section-heading">
+        O que
+        <strong>VESTIR</strong>
+      </h2>
+      <div class="section-divider"></div>
+    </div>
+    <p class="section-text">
+      O dress code é <strong>Esporte Fino</strong> e vamos todos entrar no clima do piano — trajes em tons de <strong>preto e branco</strong>. Nada muito formal demais, mas também nada de bermuda, tá? 😄<br><br>
+      A ideia é que todo mundo fique elegante e à vontade pra curtir muito a noite. Se tiver dúvida, pode mandar mensagem!
+    </p>
+  </div>
+
+  <div class="trajes-img-wrap">
+    <img src="ASSETS/IMAGES/TRAJES.png" alt="Referência de trajes — preto e branco" />
+  </div>
+</section>
+
+
+<!-- ═══ FOOTER ════════════════════════════════════════ -->
+<footer>
+  <img class="footer-bg" src="ASSETS/IMAGES/BG_FINAL.png" alt="" aria-hidden="true" />
+  <div class="footer-content">
+    <p class="footer-quote">
+      "Obrigada por fazer parte da minha história. Agora vamos juntos fazer mais uma memória que vai durar pra sempre."
+    </p>
+    <div class="footer-logo">
+      <img src="ASSETS/IMAGES/logo.svg" alt="Kenia Mara — 60 Anos" />
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══ SCRIPTS ══════════════════════════════════════ -->
+<script>
+
+  /* ─── Lista de convidados ──────────────────────────── */
+  const CONVIDADOS = [
+    "Ana Silva",
+    "Carlos Souza",
+    "Mariana Oliveira",
+    "Pedro Costa",
+    "Juliana Ferreira",
+    "Roberto Almeida",
+    "Fernanda Lima",
+    "Lucas Pereira",
+    "Patricia Santos",
+    "Rafael Rodrigues",
+    "Camila Nascimento",
+    "Bruno Carvalho",
+    "Daniela Martins",
+    "Eduardo Gomes",
+    "Isabela Rocha",
+    "Gustavo Mendes",
+    "Amanda Barbosa",
+    "Felipe Cardoso",
+    "Larissa Ribeiro",
+    "Thiago Araujo",
+    "Guilherme Gelfuso",
+    "Renato Fernandes",
+  ];
+
+  function normalizar(str) {
+    return str.trim().toLowerCase()
+      .normalize('NFD').replace(/[̀-ͯ]/g, '');
+  }
+
+  function confirmarPresenca() {
+    const input = document.getElementById('rsvp-input');
+    const msg   = document.getElementById('rsvp-msg');
+    const nome  = input.value;
+
+    if (!nome.trim()) {
+      msg.className = 'rsvp-msg error';
+      msg.textContent = 'Por favor, digite seu nome antes de confirmar.';
+      return;
+    }
+
+    const encontrado = CONVIDADOS.some(c => normalizar(c) === normalizar(nome));
+
+    if (encontrado) {
+      msg.className = 'rsvp-msg success';
+      msg.textContent = `🎉 Presença confirmada! Ótimo te ter por aqui, ${nome.trim().split(' ')[0]}. Te esperamos no dia 12 de setembro!`;
+      input.value = '';
+    } else {
+      msg.className = 'rsvp-msg error';
+      msg.textContent = `Hmm, não encontramos "${nome.trim()}" na lista. Confira a grafia ou entre em contato com a aniversariante.`;
+    }
+  }
+
+  document.getElementById('rsvp-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') confirmarPresenca();
+  });
+
+  document.getElementById('rsvp-input').addEventListener('input', () => {
+    const msg = document.getElementById('rsvp-msg');
+    msg.className = 'rsvp-msg';
+    msg.textContent = '';
+  });
+
+
+  /* ─── Player de áudio ─────────────────────────────── */
+  const audioEl   = document.getElementById('audio-el');
+  const iconPlay  = document.getElementById('icon-play');
+  const iconPause = document.getElementById('icon-pause');
+  const audioDot  = document.getElementById('audio-dot');
+
+  function toggleAudio() {
+    if (audioEl.paused) {
+      audioEl.play();
+      iconPlay.style.display  = 'none';
+      iconPause.style.display = 'block';
+      audioDot.classList.add('playing');
+    } else {
+      audioEl.pause();
+      iconPlay.style.display  = 'block';
+      iconPause.style.display = 'none';
+      audioDot.classList.remove('playing');
+    }
+  }
+
+  /* sincroniza ícones se o áudio terminar (não deve, pois é loop) */
+  audioEl.addEventListener('pause', () => {
+    iconPlay.style.display  = 'block';
+    iconPause.style.display = 'none';
+    audioDot.classList.remove('playing');
+  });
+
+
+  /* ─── Zoom parallax — Foto sessão ──────────────────── */
+  const fotoBgWrap = document.getElementById('foto-bg-wrap');
+  const fotoSec    = document.getElementById('foto-kenia');
+
+  function parallaxFoto() {
+    if (!fotoBgWrap || !fotoSec) return;
+    const rect     = fotoSec.getBoundingClientRect();
+    const wh       = window.innerHeight;
+    const progress = Math.max(0, Math.min(1, (wh - rect.top) / (wh + rect.height)));
+    const scale    = 1 + progress * 0.10;   /* zoom sutil: 1.0 → 1.10 */
+    fotoBgWrap.style.transform = `scale(${scale})`;
+  }
+
+  /* ─── Zoom parallax — Hotel ─────────────────────────── */
+  const hotelWrap = document.getElementById('hotel-bg-wrap');
+  const hotelSec  = document.getElementById('hotel');
+
+  function parallaxHotel() {
+    if (!hotelWrap || !hotelSec) return;
+    const rect     = hotelSec.getBoundingClientRect();
+    const wh       = window.innerHeight;
+    const progress = Math.max(0, Math.min(1, (wh - rect.top) / (wh + rect.height)));
+    const scale    = 1 + progress * 0.15;
+    const ty       = (progress - 0.5) * -40;
+    hotelWrap.style.transform = `scale(${scale}) translateY(${ty}px)`;
+  }
+
+  window.addEventListener('scroll', () => { parallaxFoto(); parallaxHotel(); }, { passive: true });
+  parallaxFoto();
+  parallaxHotel();
+
+</script>
+
+</body>
+</html>

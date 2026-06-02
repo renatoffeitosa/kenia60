@@ -6,6 +6,16 @@
   <title>Kenia — 60 Anos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>
+    /* ─── EmailJS — inicialização ───────────────────────
+       Substitua YOUR_PUBLIC_KEY pela sua chave pública
+       obtida em https://www.emailjs.com (conta gratuita)
+    ──────────────────────────────────────────────────── */
+    emailjs.init({ publicKey: 'YOUR_PUBLIC_KEY' });
+  </script>
+
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&display=swap" rel="stylesheet" />
 
   <style>
@@ -667,15 +677,15 @@
     <svg id="icon-pause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
   </button>
   <div class="audio-info">
-    <span class="audio-title">Grande Valse Brillante</span>
-    <span class="audio-artist">Chopin · Rachmaninoff ao piano</span>
+    <span class="audio-title">Prelúdio Op. 28 Nº 7</span>
+    <span class="audio-artist">Chopin</span>
   </div>
   <div class="audio-dot" id="audio-dot"></div>
 </div>
 
 <!-- elemento de áudio (oculto) -->
 <audio id="audio-el" loop preload="auto">
-  <source src="ASSETS/valsa_chopin.mp3" type="audio/mpeg" />
+  <source src="ASSETS/Prelude Op. 28 no. 7.mp3" type="audio/mpeg" />
 </audio>
 
 <script>
@@ -777,7 +787,7 @@
 <!-- ═══ MAOS + O QUE ESPERAR ════════════════════════ -->
 <section id="esperar-section">
   <div class="maos-full">
-    <img src="ASSETS/IMAGES/MAOS.png" alt="" aria-hidden="true" />
+    <img src="ASSETS/IMAGES/MAOS.gif" alt="" aria-hidden="true" />
   </div>
 
   <div class="esperar-inner">
@@ -789,7 +799,7 @@
       <div class="section-divider"></div>
     </div>
     <p class="section-text">
-      Ótimas companhias, conversas que rendem, vinhos que aquecem o coração e um ambiente aconchegante dentro de um dos <strong>restaurantes mais icônicos de Brasília</strong>, com direito a hospedagem com desconto. Além disso, música ao vivo por conta da aniversariante — uma apresentação de piano com repertório escolhido a dedo.<br><br>
+      Ótimas companhias, conversas que rendem, vinhos que aquecem o coração e um ambiente aconchegante dentro de um dos <strong>salões mais icônicos de Brasília</strong>, com direito a hospedagem com desconto. Além disso, música ao vivo por conta da aniversariante — uma apresentação de piano com repertório escolhido a dedo.<br><br>
       É uma noite pra lembrar pra sempre. Vem junto!
     </p>
   </div>
@@ -833,7 +843,7 @@
       <div class="section-divider"></div>
     </div>
     <p class="section-text">
-      O dress code é <strong>Esporte Fino</strong> e vamos todos entrar no clima do piano — trajes em tons de <strong>preto e branco</strong>. Nada muito formal demais, mas também nada de bermuda, tá? 😄<br><br>
+      O dress code é <strong>Esporte Fino</strong> e vamos todos entrar no clima do piano — trajes em tons de <strong>PRETO E BRANCO</strong>. Nada muito formal demais, mas também nada de bermuda, tá? 😄<br><br>
       A ideia é que todo mundo fique elegante e à vontade pra curtir muito a noite. Se tiver dúvida, pode mandar mensagem!
     </p>
   </div>
@@ -863,28 +873,138 @@
 
   /* ─── Lista de convidados ──────────────────────────── */
   const CONVIDADOS = [
-    "Ana Silva",
-    "Carlos Souza",
-    "Mariana Oliveira",
-    "Pedro Costa",
-    "Juliana Ferreira",
-    "Roberto Almeida",
-    "Fernanda Lima",
-    "Lucas Pereira",
-    "Patricia Santos",
-    "Rafael Rodrigues",
-    "Camila Nascimento",
-    "Bruno Carvalho",
-    "Daniela Martins",
-    "Eduardo Gomes",
-    "Isabela Rocha",
-    "Gustavo Mendes",
-    "Amanda Barbosa",
-    "Felipe Cardoso",
-    "Larissa Ribeiro",
-    "Thiago Araujo",
+    "Natalia Junqueira",
+    "Gustavo Menezes",
+    "Carmela Elvira",
+    "Carlos Amaral",
+    "Carolina Queiroz",
+    "Enrique Fernandes",
+    "Duane Queiroz",
+    "Eliene Ferreira",
+    "Vitor Queiroz",
+    "Felipe Queiroz",
+    "Laura Queiroz",
+    "Javier Matias",
+    "Carmen Matias",
+    "Ana Clara Vajas",
+    "Marcelo Villa-Verde",
+    "Luisa Villa-Verde",
+    "Bernardo Villa-Verde",
+    "Ana Carla Holanda",
+    "Juliano Baiocchi",
+    "Lilah Marques",
+    "Juliana Villa-Verde",
+    "Daniel Ferreira",
+    "Erica Silva",
+    "Erasto Villa-Verde",
+    "Rosana Carvalho",
+    "Erasto César Pinho",
+    "Marta Cunha",
+    "Gilda Maria Villa-Verde",
+    "João Pedro Lopes de Freitas",
+    "Ana Clara Vasconcelos",
+    "Hiago Santos Breda",
+    "Leta Menezes",
+    "Iraldo Menezes",
+    "Natália Menezes",
+    "Igor Cruz",
+    "July Marly",
+    "Alan Brand",
+    "Cida Baiocchi",
+    "Leonardo Neira",
+    "Sônia Baiocchi",
+    "Marcos Buchmann",
+    "Ricardo Baiocchi",
+    "Janaína Macedo",
+    "Eduardo Baiocchi",
+    "Dôra Baiocchi",
+    "Denise Baiocchi",
+    "João José Vianna",
+    "Marisa Seixas Prata",
+    "Cintia Clemente",
+    "James Santos",
+    "Flavia Bustamante",
+    "Carlos Bustamante",
+    "Soraya Baiocchi",
+    "Marisa Baiocchi",
+    "Leonardo Princivale",
+    "Tia Marisa",
+    "Tio Pilinha",
+    "Tia Wania",
+    "Michel Baiocchi",
+    "Leonardo Baiocchi",
+    "Flavia Baiocchi",
+    "Rodrigo Baiocchi",
+    "Viviane Borges",
+    "Eliane Said Dutra",
+    "Marcello Katalinic Dutra",
+    "Nathalia Pizato",
+    "Marco Delgado",
+    "Maísa Araújo",
+    "Simone Gonzaga",
+    "Moises de Morais",
+    "Regina Ranielly",
+    "Caike Medeiros",
+    "Débora França",
+    "Daniela Gomes",
+    "Fracisco Neves",
+    "Vera Neves",
+    "Pérola Magalhães",
+    "Dino Batista",
     "Guilherme Gelfuso",
     "Renato Fernandes",
+    "Eliete Guerra",
+    "Odair Guerra",
+    "Paula Diniz",
+    "Tom Morandini",
+    "Angélica Amato",
+    "Leandro Lacerda",
+    "Heliana Mestrinho",
+    "José Carlos",
+    "Helena Shimizu",
+    "Adriano Shimizu",
+    "Teresa Helena",
+    "Sandra Arruda",
+    "Lilian Cuppari",
+    "Sylvia Francischini",
+    "Silvia Priore",
+    "Gloria Valéria",
+    "Wandrei Braga",
+    "João Paulo",
+    "Débora Ronca",
+    "Ricardo Lima",
+    "Nilma Bulhões",
+    "Felipe Bulhões",
+    "Mari Melendez",
+    "Bebeto Correia",
+    "Juliana Katalinic",
+    "Vitor Carvalho de Oliveira",
+    "Victor Katalinic",
+    "Cinthya Neiva",
+    "Rodolfo Deusdará",
+    "Juliana de Souza Lapa",
+    "Maria de Lourdes Ferreirinha",
+    "Franduyá Rodrigues",
+    "Maria de Fátima Ferreirinha",
+    "Bethsaida Soares",
+    "Laudir Schmitz",
+    "Beatriz Buchmann",
+    "Bernardo Vereza",
+    "Cecília Baiocchi",
+    "Hugo Poletto",
+    "Rafael Peixoto",
+    "Isa Lepesquer",
+    "Amanda Barbosa Veloso",
+    "Felipe Baiocchi",
+    "Hugo Buchmann",
+    "Isa Coppetti",
+    "Maria Claudia Borges Junqueira",
+    "Leonel Pereira",
+    "Mari Carvalho",
+    "Gabriel Xavier",
+    "Luiz Ribeiro",
+    "Antonia Ribeiro",
+    "Paulo Baiocchi",
   ];
 
   function normalizar(str) {
@@ -892,8 +1012,20 @@
       .normalize('NFD').replace(/[̀-ͯ]/g, '');
   }
 
+  /* ─── E-mail do anfitrião ───────────────────────────
+     Substitua os valores abaixo após criar sua conta
+     gratuita em https://www.emailjs.com :
+       SERVICE_ID  → ID do serviço de e-mail conectado
+       TEMPLATE_ID → ID do template criado no EmailJS
+     O template deve conter a variável {{nome_convidado}}
+  ──────────────────────────────────────────────────── */
+  const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';
+  const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+  const EMAIL_ANFITRIAO     = 'keniabaiocchi@gmail.com';
+
   function confirmarPresenca() {
     const input = document.getElementById('rsvp-input');
+    const btn   = document.querySelector('.rsvp-btn');
     const msg   = document.getElementById('rsvp-msg');
     const nome  = input.value;
 
@@ -906,8 +1038,22 @@
     const encontrado = CONVIDADOS.some(c => normalizar(c) === normalizar(nome));
 
     if (encontrado) {
+      /* feedback imediato ao convidado */
       msg.className = 'rsvp-msg success';
       msg.textContent = `🎉 Presença confirmada! Ótimo te ter por aqui, ${nome.trim().split(' ')[0]}. Te esperamos no dia 12 de setembro!`;
+
+      /* envia e-mail de notificação ao anfitrião via EmailJS */
+      if (typeof emailjs !== 'undefined' &&
+          EMAILJS_SERVICE_ID !== 'YOUR_SERVICE_ID') {
+        btn.disabled = true;
+        emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+          nome_convidado: nome.trim(),
+          email_anfitriao: EMAIL_ANFITRIAO,
+          data_confirmacao: new Date().toLocaleString('pt-BR'),
+        }).catch(() => {/* falha silenciosa — confirmação já foi exibida */})
+          .finally(() => { btn.disabled = false; });
+      }
+
       input.value = '';
     } else {
       msg.className = 'rsvp-msg error';

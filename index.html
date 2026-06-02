@@ -1009,7 +1009,7 @@
      Para trocar o destinatário, gere uma nova chave em
      https://web3forms.com com o e-mail desejado.
   ──────────────────────────────────────────────────── */
-  const WEB3FORMS_KEY = 'ef4c7522-2c9f-4cee-86f5-bd23e4af53f2';
+  const WEB3FORMS_KEY = '4c941c8b-f990-4eb8-8bfc-138eb04b447e';
 
   function emailBody(nome) {
     const agora = new Date().toLocaleString('pt-BR', {
@@ -1061,6 +1061,7 @@ Site Kenia 60 Anos`;
           subject: `✅ ${nome} confirmou presença no aniversário de Kenia!`,
           message: emailBody(nome),
           from_name: 'Site Kenia 60 Anos',
+          replyto: 'keniabaiocchi@gmail.com',
           botcheck: '',
         })
       })
